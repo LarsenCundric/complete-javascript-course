@@ -1,0 +1,63 @@
+/* select ALL elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* height and width include padding and margin! :D */
+}
+
+body {
+  /* child elements inherit these styles */
+  background-color: rgb(243, 248, 248);
+  font-family: Helvetica;
+  font-size: 15px;
+  padding: 50px;
+}
+
+/* by default some elements already have some box properties (e.g. margin in headers) */
+h1 {
+  font-size: 40px;
+  margin-bottom: 25px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center; /* we can do this since it is a block element */
+}
+
+h4 {
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+.first {
+  color: red;
+}
+
+#your-name {
+  background-color: rgb(158, 179, 236);
+  border: 5px solid #444;
+  width: 400px;
+  padding: 15px;
+  margin-top: 30px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+a {
+  background-color: rgb(227, 134, 40);
+}
+
+/* child element selector! */
+#your-name h2 {
+  color: olivedrab;
+}
+
+#course-image {
+  height: 200px;
+}
