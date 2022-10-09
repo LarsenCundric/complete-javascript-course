@@ -45,7 +45,7 @@ function rollDice() {
   diceEl.src = `dice-${roll}.png`;
 
   if (roll === 1) {
-    switchPlayer()
+    switchPlayer();
   } else {
     activeScore = activeScore + roll;
     document.getElementById(`current--${activePlayer}`).textContent = activeScore;
@@ -58,7 +58,7 @@ function holdScore() {
   scores[activePlayer] = scores[activePlayer] + activeScore;
   document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
 
-  if (scores[activePlayer] >= 10) {
+  if (scores[activePlayer] >= 100) {
     diceEl.classList.add('hidden');
     document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
     document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
