@@ -71,6 +71,75 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+let currentAccount;
+let currentMovements;
+
+// DISPLAY MOVEMENTS
+const displayMovemenets = function (movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach((mov, i) => {
+    const movType = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${movType}">${i + 1} ${movType}</div>
+        <div class="movements__value">${mov}€</div>
+      </div>
+    `;
+    containerMovements.insertAdjacentHTML('afterbegin', html)
+  });
+}
+
+// CREATE USERNAMES
+const createUsernames = function(accs) {
+  accs.forEach((acc) => {
+    acc.username = acc.owner
+    .toLocaleLowerCase()
+    .split(' ')
+    .reduce((p, c) => `${p}${c.charAt(0)}`, '');
+  });
+}
+createUsernames(accounts)
+
+// CALCULATE BALANCE
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => mov + acc, 0);
+  labelBalance.textContent = `${balance} EUR`;
+}
+
+// DISPLAY SUMMARY
+const calcDisplaySummary = function (account) {
+  const movements = account.movements;
+  const income = movements.filter((mov) => mov > 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const out = movements.filter((mov) => mov < 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${out}€`;
+
+  const interest = movements
+    .filter((mov) => mov > 0)
+    .map((deposit) => deposit * account.interestRate / 100)
+    .filter((int) => int > 1)
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+}
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault(); // prevent form from submitting!
+  currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
+
+  if (currentAccount?.pin !== Number(inputLoginPin.value)) return;
+  console.log('LOGIN');
+
+  labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ').shift()}`
+  containerApp.style.opacity = 100;
+
+  inputLoginUsername.value = inputLoginPin.value = '';
+  inputLoginPin.blur(); // lose focus!
+
+  currentMovements = currentAccount.movements
+  calcDisplaySummary(currentAccount);
+  displayMovemenets(currentMovements);
+  calcDisplayBalance(currentMovements);
+})
 
 /////////////////////////////////////////////////
