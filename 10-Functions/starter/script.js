@@ -57,3 +57,19 @@ const partialFuncVAT = (rate) => {
 const addVATPortugal = partialFuncVAT(0.23);
 
 console.log(addVATPortugal(100))
+
+
+// CLOSURE
+
+const closureFunction = () => {
+  let count = 0;
+
+  return () => { count++; console.log('Count is:', count); }
+}
+
+const returned = closureFunction();
+returned();
+returned();
+
+console.dir(returned)
+console.dir(closureFunction)
