@@ -72,12 +72,11 @@ const currencies = new Map([
 ]);
 
 let currentAccount;
-let currentMovements;
 
 // DISPLAY MOVEMENTS
-const displayMovemenets = function (movements) {
+const displayMovements = function (account) {
   containerMovements.innerHTML = '';
-  movements.forEach((mov, i) => {
+  account.movements.forEach((mov, i) => {
     const movType = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -101,9 +100,9 @@ const createUsernames = function(accs) {
 createUsernames(accounts)
 
 // CALCULATE BALANCE
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => mov + acc, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = function (account) {
+  account.balance = account.movements.reduce((acc, mov) => mov + acc, 0);
+  labelBalance.textContent = `${account.balance} EUR`;
 }
 
 // DISPLAY SUMMARY
@@ -123,6 +122,12 @@ const calcDisplaySummary = function (account) {
   labelSumInterest.textContent = `${interest}€`;
 }
 
+const updateUI = (acc) => {
+  calcDisplaySummary(acc);
+  calcDisplayBalance(acc);
+  displayMovements(acc);
+}
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // prevent form from submitting!
   currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
@@ -136,10 +141,112 @@ btnLogin.addEventListener('click', function (e) {
   inputLoginUsername.value = inputLoginPin.value = '';
   inputLoginPin.blur(); // lose focus!
 
-  currentMovements = currentAccount.movements
-  calcDisplaySummary(currentAccount);
-  displayMovemenets(currentMovements);
-  calcDisplayBalance(currentMovements);
+  updateUI(currentAccount);
 })
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAccount = accounts.find((acc) => acc.username === inputTransferTo.value);
+
+  if (!receiverAccount?.username) {
+    alert('Username does not exist!');
+    return;
+  }
+
+  if (amount <= 0) {
+    alert('Can only transfer positive amounts!');
+    return;
+  }
+
+  if (amount > currentAccount.balance) {
+    alert('Insufficient funds!');
+    return;
+  }
+
+  if (currentAccount.username === receiverAccount.username) {
+    alert('You cannot transfer funds to yourself!');
+    return;
+  }
+
+  currentAccount.movements.push(-amount)
+  receiverAccount.movements.push(amount)
+
+  updateUI(currentAccount);
+
+  inputTransferAmount.value = '';
+  inputTransferTo.value = '';
+  inputTransferAmount.blur(); // lose focus!
+});
+
+// LOANS
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount <= 0) {
+    alert('Invalid amount!');
+    return;
+  }
+
+  if (!currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
+    alert('Condition not met! You need to have at least one deposit greater or equal to 10% of the loan amount.');
+    return;
+  }
+
+  currentAccount.movements.push(amount);
+
+  updateUI(currentAccount);
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur(); // lose focus!
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const pin = Number(inputClosePin.value);
+  const deleteAccountName = inputCloseUsername.value;
+
+  if (deleteAccountName !== currentAccount.username) {
+    alert('Invalid username! Please write in your username');
+    return;
+  }
+
+  if (currentAccount.pin !== pin) {
+    alert('Invalid credentials!');
+    return;
+  }
+
+  const deleteAccountIndex = accounts.findIndex((acc) => acc.username === currentAccount.username);
+
+  // Delete UI
+  accounts.splice(deleteAccountIndex, 1);
+
+  // Hide UI
+  containerApp.style.opacity = 0;
+
+  inputCloseUsername.value = '';
+  inputClosePin.value = '';
+  inputClosePin.blur(); // lose focus!
+})
+
+// console.log(
+//   accounts
+//     .map((acc) => acc.movements)
+//     .flat()
+//     .reduce((acc, mov) => mov + acc, 0)
+// );
+
+// console.log(
+//   accounts
+//     .flatMap((acc) => acc.movements)
+//     .reduce((acc, mov) => mov + acc, 0)
+// );
+
+// SORTING --> return < 0 A, B (keep order); return > 0 B, A (switch order)
+// console.log(
+//   account1.movements.sort((a, b) => a - b)
+// );
 
 /////////////////////////////////////////////////
