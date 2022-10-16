@@ -74,9 +74,12 @@ const currencies = new Map([
 let currentAccount;
 
 // DISPLAY MOVEMENTS
-const displayMovements = function (account) {
+const displayMovements = function (account, sort = false) {
+
+  // slice to make a copy!
+  const movements = sort ? account.movements.slice().sort((a, b) => a - b) : account.movements;
   containerMovements.innerHTML = '';
-  account.movements.forEach((mov, i) => {
+  movements.forEach((mov, i) => {
     const movType = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -248,5 +251,29 @@ btnClose.addEventListener('click', function (e) {
 // console.log(
 //   account1.movements.sort((a, b) => a - b)
 // );
+
+let sortedMovements = false;
+
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  sortedMovements = !sortedMovements;
+  displayMovements(currentAccount, sortedMovements)
+});
+
+// Array.from()
+// console.log(Array.from({ length: 5 }, (_, i) => i + 1)); // 1, 2, 3, 4, 5
+// const randomDiceRolls = Array.from({ length: 1000 }, (_, i) => Math.trunc(Math.random() * 6 + 1));
+// const initRolls = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }
+// console.log(randomDiceRolls.reduce((acc, e) => ({ ...acc, [e]: acc[e] + 1 }), initRolls));
+
+// If we don't have an array of movements
+// document.querySelector('.movements').addEventListener('click', function () {
+//   const htmlMovements = document.querySelectorAll('.movements__value')
+//   // from nodelist to array!
+//   console.log(Array.from(htmlMovements, (el) => el.textContent.replace('€', '')));
+
+//   const array2 = [...htmlMovements] // same but we have to do map() separately
+//   console.log(array2);
+// })
 
 /////////////////////////////////////////////////

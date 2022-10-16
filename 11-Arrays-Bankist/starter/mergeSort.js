@@ -32,5 +32,5 @@ function mergeSort(arr = [2, 5, 2, 1, 3, 5, 6, 3, 8, 3, 1], compareFn = (a, b) =
   return mergeSortRek(arr);
 }
 
-const sortedArr = mergeSort(undefined, (a, b) => a - b) // [4, 2, 5, 2, 3]
-console.log(sortedArr);
+// const sortedArr = mergeSort(undefined, (a, b) => a - b) // [4, 2, 5, 2, 3]
+// console.log(sortedArr);
