@@ -166,7 +166,8 @@ sarah.init('Sarah', 1987);
 sarah.calcAge();
 console.log(sarah);
 
-// Will inherit from Person
+////////////////////////////////////////////////
+// "Class" Inheritance
 const Student = function (firstName, birthYear, course) {
   Person.call(this, firstName, birthYear); 
   this.course = course;
@@ -193,3 +194,19 @@ console.dir(Student.prototype.constructor);
 console.log(mike instanceof Student); // true
 console.log(mike instanceof Person); // true
 console.log(mike instanceof Object); // true
+
+
+class StudentCl extends PersonCl { // extends already links prototypes behind the scenes
+  constructor(fullName, birthYear, course) {
+    // Always needs to happen first!
+    super(fullName, birthYear); // construction function of PersonCl
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.firstName} and I study ${this.course}`);
+  }
+};
+
+const martha = new StudentCl('Martha Jones', 2001, 'CS');
+console.log(martha);
