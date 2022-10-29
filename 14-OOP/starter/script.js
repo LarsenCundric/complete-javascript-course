@@ -210,3 +210,27 @@ class StudentCl extends PersonCl { // extends already links prototypes behind th
 
 const martha = new StudentCl('Martha Jones', 2001, 'CS');
 console.log(martha);
+
+// Use Object.create() to simulate inheritance... 
+const PersonProto2 = {
+  calcAge() { // we want this to be inherited
+    console.log(2022 - this.birthYear);
+  },
+  init(firstName, birthYear) { // looks like a constructor function (but has nothing to do with it)
+    this.firstName = firstName;
+    this.birthYear = birthYear
+  }
+};
+
+const StudentProto2 = Object.create(PersonProto2)
+StudentProto2.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+}
+StudentProto2.init = function (firstName, birthYear, course) {
+  PersonProto2.init.call(this, firstName, birthYear);
+  this.course = course;
+}
+const mark = Object.create(StudentProto2);
+mark.init('Mark', 1999, 'CS');
+mark.introduce();
+console.log(mark);
