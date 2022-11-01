@@ -28,27 +28,42 @@ const getPosition = function () {
   return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
 }
 
-getPosition()
-  .then(({ coords: { latitude: lat, longitude: lng }}) => {
-    console.log('Fetching geolocation data...')
-    return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-  })
-  .then((res) => {
-    if (!res.ok) throw Error('Error while fetching data from geolocation API.')
-    return res.json();
-  })
-  .then(({ country }) => {
-    console.log('Fetching country data...')
-    return fetch(`https://restcountries.com/v3.1/name/${country.toLowerCase()}`)
-  })
-  .then((res) => {
-    if (!res.ok) throw Error('Error while fetching data from country API.')
-    return res.json();
-  })
-  .then((data) => {
-    console.log(data[0]);
-    console.log(data[0].name);
-    renderCountry(data.shift())
-  })
-  .catch(console.error)
-  // .then((data) => console.log(data));
+// getPosition()
+//   .then(({ coords: { latitude: lat, longitude: lng }}) => {
+//     console.log('Fetching geolocation data...')
+//     return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//   })
+//   .then((res) => {
+//     if (!res.ok) throw Error('Error while fetching data from geolocation API.')
+//     return res.json();
+//   })
+//   .then(({ country }) => {
+//     console.log('Fetching country data...')
+//     return fetch(`https://restcountries.com/v3.1/name/${country.toLowerCase()}`)
+//   })
+//   .then((res) => {
+//     if (!res.ok) throw Error('Error while fetching data from country API.')
+//     return res.json();
+//   })
+//   .then((data) => {
+//     console.log(data[0]);
+//     console.log(data[0].name);
+//     // renderCountry(data.shift())
+//   })
+//   .catch(console.error)
+
+const whereAmI = async function () { // async func automatically returns a promise!
+  // same as .then(), just a bit different syntax...
+  try {
+    const { coords: { latitude: lat, longitude: lng } } = await getPosition();
+    const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+    const { country } = await res.json();
+    const res2 = await fetch(`https://restcountries.com/v3.1/name/${country.toLowerCase()}`);
+    const data = await res2.json();
+    renderCountry(data.shift());
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+whereAmI('netherlands')
