@@ -52,18 +52,61 @@ const getPosition = function () {
 //   })
 //   .catch(console.error)
 
-const whereAmI = async function () { // async func automatically returns a promise!
-  // same as .then(), just a bit different syntax...
+// const whereAmI = async function () { // async func automatically returns a promise!
+//   // same as .then(), just a bit different syntax...
+//   try {
+//     const { coords: { latitude: lat, longitude: lng } } = await getPosition();
+//     const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+//     const { country } = await res.json();
+//     const res2 = await fetch(`https://restcountries.com/v3.1/name/${country.toLowerCase()}`);
+//     const data = await res2.json();
+//     renderCountry(data.shift());
+//     return country;
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+// console.log('1: Fetching your country...');
+// // IIFE
+// (async function () {
+//   try {
+//     const country = await whereAmI();
+//     console.log(`2: You live in ${country}`);
+//   } catch (err) {
+//     console.log('2: Error while fetching country...');
+//   }
+//   console.log('3: Done fetching country.');
+// })();
+
+const imgContainer = document.querySelector('.images');
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const img = document.createElement('img');
+    img.src = imgPath;
+
+    img.addEventListener('load', function () {
+      imgContainer.append(img);
+      resolve(img);
+    });
+
+    img.addEventListener('error', function () {
+      reject(new Error('Image not found'));
+    });
+  });
+};
+
+const loadImages = async function (images) {
   try {
-    const { coords: { latitude: lat, longitude: lng } } = await getPosition();
-    const res = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-    const { country } = await res.json();
-    const res2 = await fetch(`https://restcountries.com/v3.1/name/${country.toLowerCase()}`);
-    const data = await res2.json();
-    renderCountry(data.shift());
+    const imgs = images.map((i) => createImage(i));
+    console.log(imgs);
+    const imgEls = await Promise.all(imgs);
+    console.log(imgEls);
+    imgEls.forEach((el) => el.classList.add('parallel'))
   } catch (err) {
     console.error(err);
   }
 }
 
-whereAmI('netherlands')
+loadImages(['img/img-1.jpg', 'img/img-2.jpg', 'img/img-3.jpg'])
