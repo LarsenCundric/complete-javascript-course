@@ -23,7 +23,6 @@ console.log(cart); // live connection to export! --> we get the mutated array
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
 // CLEAN CODE
-
 /*
 1. Readable code
   - avoid "clever" / overcomplicated solutions
@@ -54,4 +53,67 @@ console.log(cart); // live connection to export! --> we get the mutated array
   - consume promises with async/await (avoid .then())
   - whenever you can, run promises in parallel (Promise.all, Promise.race ...)
   - handle errors and promise rejection
+*/
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+// IMPERATIVE vs DECLARATIVE
+/*
+1. Imperative
+  - explain "HOW to do things"
+  - explain every single step to follow...
+  - example: step by step recipe of a cake
+
+  const arr = [1, 2, 3, 4];
+  const doubled = [];
+  for (let i = 0; i < arr.length; i++) {
+    doubled[i] = arr[i] * 2;
+  }
+
+2. Declarative
+  - explain "WHAT to do"
+  - just describe the way
+  - the HOW gets abstracted away...
+  - example: description of cake
+
+  const arr = [1, 2, 3, 4];
+  const doubled = arr.map(n => n * 2);
+*/
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+// FUNCTIONAL programming (e.g. React, Redux)
+/*
+  - declarative programming paradigm
+  - pure functions, avoiding side effects / mutating data
+  - Side effect: mutation of any data outside of a function (external vars, console logging, writing to DOM...)
+  - Pure functions: functions without side effect (does not depend on external vars) --> given the same input, return same output (deterministic)
+  - Immutability: data in NEVER modified. Rather copied and then that is mutated and returned
+*/
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+// FUNCTIONAL programming techniques
+/*
+  - try to avoid data mutation
+  - use built-in methods that do not produce side effects
+  - try to avoid side effects in functions (not always possible...)
+*/
+
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+///////////////////////////////////////////////////
+// Declarative syntax
+/*
+  - use array and object deconstructing
+  - use spread/rest operator
+  - use ternary (conditional) operator
+  - use template literals
 */
