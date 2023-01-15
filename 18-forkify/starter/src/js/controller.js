@@ -24,7 +24,8 @@ const controlRecipes = async function () {
 
     recipeView.renderSpinner();
 
-    resultsView.update(model.getSearchResultsPage())
+    resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
 
     await model.loadRecipe(id);
 
@@ -70,7 +71,7 @@ const controlAddBookmark = function () {
   } else {
     model.addBookmark(model.state.recipe);
   }
-  
+
   recipeView.update(model.state.recipe);
 
   bookmarksView.render(model.state.bookmarks);
