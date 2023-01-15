@@ -63,5 +63,3 @@ export const updateServings = function (newServings) {
 
   state.recipe.servings = newServings;
 };
-
-loadSearchResults('pizza')
