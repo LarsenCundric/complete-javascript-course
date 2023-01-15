@@ -19,6 +19,14 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  /**
+   * Renders the received data object to the DOM
+   * @param {Object | Object[]} data The data to be rendered
+   * @returns {undefined} undefined
+   * @this {Object} View instance
+   * @todo finish?
+   * @author Larsen
+   */
   render(data) {
     if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
