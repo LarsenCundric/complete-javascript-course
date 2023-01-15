@@ -1,4 +1,5 @@
 import View from "./View";
+import icons from 'url:../../img/icons.svg'; // Parcel 2
 
 class PreviewView extends View {
   _generateMarkupPreview(el) {
@@ -14,7 +15,7 @@ class PreviewView extends View {
             <p class="preview__publisher">${el.publisher}</p>
             <div class="preview__user-generated">
               <svg>
-                <use href="src/img/icons.svg#icon-user"></use>
+                <use href="${icons}#icon-user"></use>
               </svg>
             </div>
           </div>
