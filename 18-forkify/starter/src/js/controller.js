@@ -16,7 +16,7 @@ import paginationView from './views/paginationView';
 ///////////////////////////////////////
 
 // subscriber function
-const controlRecipes = async function() {
+const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1); 
     if (!id) return;
@@ -32,7 +32,7 @@ const controlRecipes = async function() {
   }
 }
 
-const controlSearchResults = async function() {
+const controlSearchResults = async function () {
   try {
     // Get query string
     const query = searchView.getQuery();
@@ -50,13 +50,19 @@ const controlSearchResults = async function() {
   }
 }
 
-const controlPagination = function(goto) {
+const controlPagination = function (goto) {
   resultsView.render(model.getSearchResultsPage(goto));
   paginationView.render(model.state.search);
 }
 
+const controlServings = function (newServings) {
+  model.updateServings(newServings);
+  recipeView.render(model.state.recipe);
+}
+
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings)
   searchView.addHandlerRender(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 }
