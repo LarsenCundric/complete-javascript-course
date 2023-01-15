@@ -5,6 +5,7 @@ import * as model from './model';
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
+import bookmarksView from './views/bookmarksView';
 import paginationView from './views/paginationView';
 
 // if (module.hot) { // Parcel - application state can be retained as you change small things
@@ -63,9 +64,22 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe);
 }
 
+const controlAddBookmark = function () {
+  if (model.state.recipe.bookmarked) {
+    model.deleteBookmark(model.state.recipe.id);
+  } else {
+    model.addBookmark(model.state.recipe);
+  }
+  
+  recipeView.update(model.state.recipe);
+
+  bookmarksView.render(model.state.bookmarks);
+}
+
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
-  recipeView.addHandlerUpdateServings(controlServings)
+  recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerBookmark(controlAddBookmark);
   searchView.addHandlerRender(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 }

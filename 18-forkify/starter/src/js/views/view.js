@@ -42,7 +42,7 @@ export default class View {
       const currEl = currElements[i];
 
       // Updates changed text
-      if (!newEl.isEqualNode(currEl) && newEl.firstChild.nodeValue.trim() !== '') {
+      if (!newEl.isEqualNode(currEl) && newEl.firstChild?.nodeValue.trim() !== '') {
         currEl.textContent = newEl.textContent;
       }
 
